@@ -7,10 +7,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="securityfirstdemo" />
+        <module name="securityseconddemo" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="securityfirstdemo" target="1.8" />
+      <module name="securityseconddemo" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

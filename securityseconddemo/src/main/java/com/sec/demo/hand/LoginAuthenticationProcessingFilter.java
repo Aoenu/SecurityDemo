@@ -26,6 +26,7 @@ public class LoginAuthenticationProcessingFilter extends AbstractAuthenticationP
         super(new AntPathRequestMatcher(defaultFilterProcessesUrl, "POST"));
     }
 
+
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
         if (this.postOnly && !request.getMethod().equals("POST")) {

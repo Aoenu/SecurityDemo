@@ -1,9 +1,14 @@
 package com.sec.demo.hand;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -16,28 +21,18 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class LoginAuthenticationProvider implements AuthenticationProvider {
 
-    final static Map<LoginUser, SimpleGrantedAuthority> loginAuthorityMap = new ConcurrentHashMap<LoginUser, SimpleGrantedAuthority>();
-
-    //维护一个ip白名单列表，每个ip对应一定的权限
-    static {
-        loginAuthorityMap.put(new LoginUser("admin", "admin"), new SimpleGrantedAuthority("ADMIN"));
-        loginAuthorityMap.put(new LoginUser("user", "user"), new SimpleGrantedAuthority("USER"));
-        loginAuthorityMap.put(new LoginUser("test", "test"), new SimpleGrantedAuthority("TEST"));
-    }
-
+    @Autowired
+    private MyUserDetailsService myUserDetailsService;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         LoginAuthenticationToken loginAuthenticationToken = (LoginAuthenticationToken) authentication;
         String username = loginAuthenticationToken.getUsername();
-        String password = loginAuthenticationToken.getPassword();
-        SimpleGrantedAuthority simpleGrantedAuthority = loginAuthorityMap.get(new LoginUser(username, password));
-        //不在白名单列表中
-        if (simpleGrantedAuthority == null) {
+        UserDetails user = this.retrieveUser(username, (LoginAuthenticationToken) authentication);
+        if (user == null) {
             return null;
-        } else {
-            //封装权限信息，并且此时身份已经被认证 see
-            return new LoginAuthenticationToken(username, password, Arrays.asList(simpleGrantedAuthority));
+        }else {
+            return this.createSuccessAuthentication(username,(LoginAuthenticationToken) authentication,user);
         }
     }
 
@@ -45,4 +40,20 @@ public class LoginAuthenticationProvider implements AuthenticationProvider {
     public boolean supports(Class<?> authentication) {
         return (LoginAuthenticationToken.class.isAssignableFrom(authentication));
     }
+
+    private UserDetails retrieveUser(String username, LoginAuthenticationToken authentication) throws AuthenticationException {
+        UserDetails loadedUser = myUserDetailsService.loadUserByUsername(username);
+        if (loadedUser == null) {
+            throw new InternalAuthenticationServiceException("UserDetailsService returned null, which is an interface contract violation");
+        } else {
+            return loadedUser;
+        }
+    }
+
+    protected Authentication createSuccessAuthentication(String principal, LoginAuthenticationToken authentication, UserDetails user) {
+        LoginAuthenticationToken result = new LoginAuthenticationToken(principal, authentication.getPassword(), Arrays.asList(new SimpleGrantedAuthority("ADMIN")));
+        result.setDetails(authentication.getDetails());
+        return result;
+    }
+
 }

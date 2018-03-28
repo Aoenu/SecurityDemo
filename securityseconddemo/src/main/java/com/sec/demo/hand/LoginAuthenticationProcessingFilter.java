@@ -43,8 +43,8 @@ public class LoginAuthenticationProcessingFilter extends AbstractAuthenticationP
             }
 
             username = username.trim();
-            UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username, password);
-            this.setDetails(request, authRequest);
+            LoginAuthenticationToken authRequest = new LoginAuthenticationToken(username, password);
+//            this.setDetails(request, authRequest);
             return this.getAuthenticationManager().authenticate(authRequest);
         }
     }
@@ -53,9 +53,9 @@ public class LoginAuthenticationProcessingFilter extends AbstractAuthenticationP
         return request.getParameter(this.usernameParameter);
     }
 
-    protected void setDetails(HttpServletRequest request, UsernamePasswordAuthenticationToken authRequest) {
-        authRequest.setDetails(this.authenticationDetailsSource.buildDetails(request));
-    }
+//    protected void setDetails(HttpServletRequest request, UsernamePasswordAuthenticationToken authRequest) {
+//        authRequest.setDetails(this.authenticationDetailsSource.buildDetails(request));
+//    }
 
     protected String obtainPassword(HttpServletRequest request) {
         return request.getParameter(this.passwordParameter);

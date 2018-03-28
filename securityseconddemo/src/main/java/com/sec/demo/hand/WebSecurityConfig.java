@@ -7,12 +7,10 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import javax.servlet.Filter;
 
 /**
  * @author baoben.wu@hand-china.com
@@ -33,24 +31,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/", "home").permitAll()
-                .antMatchers("Login").permitAll()
-                .anyRequest().authenticated()
+                .antMatchers("/").permitAll()
+                .antMatchers("/user/**").hasRole("USER")
                 .and()
-                .logout()
-                .logoutSuccessUrl("/")
-                .permitAll()
+                .formLogin().loginPage("/login").defaultSuccessUrl("/user")
+                .and()
+                .logout().logoutUrl("/logout").logoutSuccessUrl("/login")
                 .and()
                 .exceptionHandling()
-                .accessDeniedPage("Login")
                 .authenticationEntryPoint(loginUrlAuthenticationEntryPoint());
         http.addFilterBefore(loginAuthenticationProcessingFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class);
     }
 
     LoginAuthenticationProcessingFilter loginAuthenticationProcessingFilter(AuthenticationManager authenticationManager) {
-        LoginAuthenticationProcessingFilter loginAuthenticationProcessingFilter = new LoginAuthenticationProcessingFilter("Login");
+        LoginAuthenticationProcessingFilter loginAuthenticationProcessingFilter = new LoginAuthenticationProcessingFilter("/login");
         loginAuthenticationProcessingFilter.setAuthenticationManager(authenticationManager);
-        loginAuthenticationProcessingFilter.setAuthenticationFailureHandler(new SimpleUrlAuthenticationFailureHandler("/Login?error"));
+        loginAuthenticationProcessingFilter.setAuthenticationFailureHandler(new SimpleUrlAuthenticationFailureHandler("/login?error"));
         return loginAuthenticationProcessingFilter;
     }
 
@@ -59,7 +55,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     LoginUrlAuthenticationEntryPoint loginUrlAuthenticationEntryPoint() {
         LoginUrlAuthenticationEntryPoint loginUrlAuthenticationEntryPoint = new LoginUrlAuthenticationEntryPoint
-                ("/Login");
+                ("/login");
         return loginUrlAuthenticationEntryPoint;
     }
 

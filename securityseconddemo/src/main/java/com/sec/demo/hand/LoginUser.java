@@ -8,6 +8,16 @@ package com.sec.demo.hand;
 public class LoginUser {
     private String username;
     private String password;
+    private String roles;
+
+    public String getRoles() {
+        return roles;
+    }
+
+    public LoginUser setRoles(String roles) {
+        this.roles = roles;
+        return this;
+    }
 
     public String getUsername() {
         return username;
@@ -30,5 +40,11 @@ public class LoginUser {
     public LoginUser(String username, String password) {
         this.username = username;
         this.password = password;
+    }
+
+    public LoginUser(String username, String password, String roles) {
+        this.username = username;
+        this.password = password;
+        this.roles = roles;
     }
 }

@@ -33,16 +33,17 @@ public class LoginAuthenticationToken extends AbstractAuthenticationToken {
         return this;
     }
 
-    public LoginAuthenticationToken(String username,String password, Collection<? extends GrantedAuthority> authorities) {
+    public LoginAuthenticationToken(String username, String password, Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
         this.username = username;
         this.password = password;
         super.setAuthenticated(true);
     }
 
-    public LoginAuthenticationToken(String username) {
+    public LoginAuthenticationToken(String username, String password) {
         super(null);
         this.username = username;
+        this.password = password;
         super.setAuthenticated(false);
     }
 

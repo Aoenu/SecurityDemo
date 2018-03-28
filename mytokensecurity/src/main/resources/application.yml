@@ -1,0 +1,9 @@
+server:
+  port: 8889
+hand:
+  security:
+    token:
+      expiration-time: 10 # 分钟 1440
+      refresh-exp-time: 30 # 分钟 2880
+      issuer: springsecuritystudy
+      signing-key: hand

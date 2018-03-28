@@ -5,8 +5,10 @@
       <list>
         <option value="$PROJECT_DIR$/securityfirstdemo/pom.xml" />
         <option value="$PROJECT_DIR$/securityseconddemo/pom.xml" />
+        <option value="$PROJECT_DIR$/mytokensecurity/pom.xml" />
+        <option value="$PROJECT_DIR$/myFristSecurity/pom.xml" />
       </list>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" default="true" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
 </project>

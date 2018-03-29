@@ -51,7 +51,7 @@ public class LoginAuthenticationProvider implements AuthenticationProvider {
     }
 
     protected Authentication createSuccessAuthentication(String principal, LoginAuthenticationToken authentication, UserDetails user) {
-        LoginAuthenticationToken result = new LoginAuthenticationToken(principal, authentication.getPassword(), Arrays.asList(new SimpleGrantedAuthority("ROLE_USER")));
+        LoginAuthenticationToken result = new LoginAuthenticationToken(principal, authentication.getPassword(), user.getAuthorities());
         result.setDetails(authentication.getDetails());
         return result;
     }

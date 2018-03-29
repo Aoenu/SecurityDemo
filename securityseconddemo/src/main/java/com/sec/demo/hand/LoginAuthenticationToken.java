@@ -15,6 +15,31 @@ public class LoginAuthenticationToken extends AbstractAuthenticationToken {
     private String username;
     private String password;
 
+    public LoginAuthenticationToken(String username, String password) {
+        super(null);
+        this.username = username;
+        this.password = password;
+        super.setAuthenticated(false);
+    }
+
+
+    public LoginAuthenticationToken(String username, String password, Collection<? extends GrantedAuthority> authorities) {
+        super(authorities);
+        this.username = username;
+        this.password = password;
+        super.setAuthenticated(true);
+    }
+
+    @Override
+    public Object getCredentials() {
+        return this.password;
+    }
+
+    @Override
+    public Object getPrincipal() {
+        return this.username;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -33,28 +58,5 @@ public class LoginAuthenticationToken extends AbstractAuthenticationToken {
         return this;
     }
 
-    public LoginAuthenticationToken(String username, String password, Collection<? extends GrantedAuthority> authorities) {
-        super(authorities);
-        this.username = username;
-        this.password = password;
-        super.setAuthenticated(true);
-    }
 
-    public LoginAuthenticationToken(String username, String password) {
-        super(null);
-        this.username = username;
-        this.password = password;
-        super.setAuthenticated(false);
-    }
-
-
-    @Override
-    public Object getCredentials() {
-        return this.password;
-    }
-
-    @Override
-    public Object getPrincipal() {
-        return this.username;
-    }
 }

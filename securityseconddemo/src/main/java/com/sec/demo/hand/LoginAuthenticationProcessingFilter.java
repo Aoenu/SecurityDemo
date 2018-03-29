@@ -26,7 +26,6 @@ public class LoginAuthenticationProcessingFilter extends AbstractAuthenticationP
         super(new AntPathRequestMatcher(defaultFilterProcessesUrl, "POST"));
     }
 
-
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
         if (this.postOnly && !request.getMethod().equals("POST")) {
@@ -37,14 +36,11 @@ public class LoginAuthenticationProcessingFilter extends AbstractAuthenticationP
             if (username == null) {
                 username = "";
             }
-
             if (password == null) {
                 password = "";
             }
-
             username = username.trim();
             LoginAuthenticationToken authRequest = new LoginAuthenticationToken(username, password);
-//            this.setDetails(request, authRequest);
             return this.getAuthenticationManager().authenticate(authRequest);
         }
     }
@@ -53,12 +49,7 @@ public class LoginAuthenticationProcessingFilter extends AbstractAuthenticationP
         return request.getParameter(this.usernameParameter);
     }
 
-//    protected void setDetails(HttpServletRequest request, UsernamePasswordAuthenticationToken authRequest) {
-//        authRequest.setDetails(this.authenticationDetailsSource.buildDetails(request));
-//    }
-
     protected String obtainPassword(HttpServletRequest request) {
         return request.getParameter(this.passwordParameter);
     }
-
 }

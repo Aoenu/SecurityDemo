@@ -1,0 +1,7 @@
+security:
+  oauth2:
+    client:
+      client-id: wu
+      client-secret: aoenu
+server:
+  port: 8081

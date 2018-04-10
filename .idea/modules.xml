@@ -3,13 +3,13 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/SecurityDemo.iml" filepath="$PROJECT_DIR$/.idea/SecurityDemo.iml" />
-      <module fileurl="file://$PROJECT_DIR$/oauth2-login-weixin/demo.oAuth.weixin.iml" filepath="$PROJECT_DIR$/oauth2-login-weixin/demo.oAuth.weixin.iml" />
       <module fileurl="file://$PROJECT_DIR$/myFristSecurity/mydemo (1) (com.security).iml" filepath="$PROJECT_DIR$/myFristSecurity/mydemo (1) (com.security).iml" />
       <module fileurl="file://$PROJECT_DIR$/mytokensecurity/mydemo (2) (com.token.security).iml" filepath="$PROJECT_DIR$/mytokensecurity/mydemo (2) (com.token.security).iml" />
       <module fileurl="file://$PROJECT_DIR$/security-oauth2-1/security-oauth2-1.iml" filepath="$PROJECT_DIR$/security-oauth2-1/security-oauth2-1.iml" />
       <module fileurl="file://$PROJECT_DIR$/securityfirstdemo/securityfirstdemo.iml" filepath="$PROJECT_DIR$/securityfirstdemo/securityfirstdemo.iml" />
       <module fileurl="file://$PROJECT_DIR$/securityoauth2/securityoauth2.iml" filepath="$PROJECT_DIR$/securityoauth2/securityoauth2.iml" />
       <module fileurl="file://$PROJECT_DIR$/securityseconddemo/securityseconddemo.iml" filepath="$PROJECT_DIR$/securityseconddemo/securityseconddemo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ureport-demo/ureport-demo.iml" filepath="$PROJECT_DIR$/ureport-demo/ureport-demo.iml" />
     </modules>
   </component>
 </project>

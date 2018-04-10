@@ -6,13 +6,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="demo.oAuth.weixin" />
         <module name="mydemo (1) (com.security)" />
         <module name="mydemo (2) (com.token.security)" />
         <module name="security-oauth2-1" />
         <module name="securityfirstdemo" />
         <module name="securityoauth2" />
         <module name="securityseconddemo" />
+        <module name="ureport-demo" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -23,6 +23,7 @@
       <module name="securityfirstdemo" target="1.8" />
       <module name="securityoauth2" target="1.8" />
       <module name="securityseconddemo" target="1.8" />
+      <module name="ureport-demo" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

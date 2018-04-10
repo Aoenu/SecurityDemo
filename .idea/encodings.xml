@@ -4,10 +4,10 @@
     <file url="file://$PROJECT_DIR$/myFristSecurity" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/myFristSecurity/src/main/resources/application.yml" charset="GBK" />
     <file url="file://$PROJECT_DIR$/mytokensecurity" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/oauth2-login-weixin" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/security-oauth2-1" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/securityfirstdemo" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/securityoauth2" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/securityseconddemo" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ureport-demo" charset="UTF-8" />
   </component>
 </project>

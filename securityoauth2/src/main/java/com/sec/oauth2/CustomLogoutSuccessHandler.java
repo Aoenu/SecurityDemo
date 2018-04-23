@@ -30,17 +30,12 @@ public class CustomLogoutSuccessHandler extends AbstractAuthenticationTargetUrlR
     @Override
     public void onLogoutSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
         String token = httpServletRequest.getHeader(HEADER_AUTHORIZATION);
-
         if (token != null && token.startsWith(BEARER_AUTHENTICATION)) {
-
             OAuth2AccessToken oAuth2AccessToken = tokenStore.readAccessToken(token.split(" ")[0]);
-
             if (oAuth2AccessToken != null) {
                 tokenStore.removeAccessToken(oAuth2AccessToken);
             }
-
         }
-
         httpServletResponse.setStatus(HttpServletResponse.SC_OK);
     }
 }

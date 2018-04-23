@@ -16,7 +16,7 @@ import java.util.Collection;
 /**
  * @author baoben.wu@hand-china.com
  * @Date 2018/4/4.
- * @description
+ * @description 自定义UserDetailsService
  */
 @Component("userDetailsService")
 public class MyUserDetailsService implements UserDetailsService {
@@ -28,17 +28,14 @@ public class MyUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         username = username.toLowerCase();
         User loginUser = userMapper.getUserByUsername(username);
-
         if (loginUser == null) {
             throw new NameNotFundException("User " + username + " was not found in the database");
         }
-
         Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         for (String authority : userMapper.getUserAuthority(loginUser.getUsername())) {
             GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(authority);
             grantedAuthorities.add(grantedAuthority);
         }
-
         return new org.springframework.security.core.userdetails.User(loginUser.getUsername(), loginUser.getPassword(), grantedAuthorities);
     }
 }

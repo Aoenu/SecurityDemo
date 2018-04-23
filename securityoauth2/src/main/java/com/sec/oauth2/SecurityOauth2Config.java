@@ -7,6 +7,7 @@ import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
@@ -17,6 +18,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
+import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 import javax.sql.DataSource;
 
@@ -59,6 +61,7 @@ public class SecurityOauth2Config {
     protected static class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter implements EnvironmentAware {
         private static final String ENV_OAUTH = "authentication.oauth.";
         private static final String PROP_CLIENTID = "clientid";
+        private static final String PROP_CLIENT = "client";
         private static final String PROP_SECRET = "secret";
         private static final String PROP_TOKEN_VALIDITY_SECONDS = "tokenValidityInSeconds";
 
@@ -66,15 +69,28 @@ public class SecurityOauth2Config {
         private RelaxedPropertyResolver propertyResolver;
 
         @Autowired
-        private DataSource dataSource;
-
-
-        @Autowired
         private MyUserDetailsService myUserDetailsService;
+
+//        /**
+//         * 将token存储在数据库
+//         */
+//        @Autowired
+//        private DataSource dataSource;
+//
+//        @Bean
+//        public TokenStore tokenStore() {
+//            return new JdbcTokenStore(dataSource);
+//        }
+
+        /**
+         * 将token存储在Redis
+         */
+        @Autowired
+        private RedisConnectionFactory redisConnectionFactory;
 
         @Bean
         public TokenStore tokenStore() {
-            return new JdbcTokenStore(dataSource);
+            return new RedisTokenStore(redisConnectionFactory);
         }
 
         @Autowired
@@ -96,6 +112,13 @@ public class SecurityOauth2Config {
                     .scopes("read", "write")
                     .authorities(Authorities.ROLE_ADMIN.name(), Authorities.ROLE_USER.name())
                     .authorizedGrantTypes("password", "refresh_token")
+                    .secret(propertyResolver.getProperty(PROP_SECRET))
+                    .accessTokenValiditySeconds(propertyResolver.getProperty(PROP_TOKEN_VALIDITY_SECONDS, Integer.class, 1800))
+                    .and()
+                    .withClient(propertyResolver.getProperty(PROP_CLIENT))
+                    .scopes("read", "write")
+                    .authorities(Authorities.ROLE_USER.name())
+                    .authorizedGrantTypes("client_credentials", "refresh_token")
                     .secret(propertyResolver.getProperty(PROP_SECRET))
                     .accessTokenValiditySeconds(propertyResolver.getProperty(PROP_TOKEN_VALIDITY_SECONDS, Integer.class, 1800));
         }

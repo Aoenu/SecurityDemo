@@ -19,7 +19,6 @@ import java.io.IOException;
 @Component
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint{
 
-
     private final Logger log = LoggerFactory.getLogger(CustomAuthenticationEntryPoint.class);
 
     @Override

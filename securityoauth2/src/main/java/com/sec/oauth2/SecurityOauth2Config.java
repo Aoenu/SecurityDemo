@@ -2,11 +2,9 @@ package com.sec.oauth2;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.bind.RelaxedPropertyResolver;
-import org.springframework.context.EnvironmentAware;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -58,15 +56,19 @@ public class SecurityOauth2Config {
 
     @Configuration
     @EnableAuthorizationServer
-    protected static class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter implements EnvironmentAware {
-        private static final String ENV_OAUTH = "authentication.oauth.";
-        private static final String PROP_CLIENTID = "clientid";
-        private static final String PROP_CLIENT = "client";
-        private static final String PROP_SECRET = "secret";
-        private static final String PROP_TOKEN_VALIDITY_SECONDS = "tokenValidityInSeconds";
+    protected static class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
 
+        @Value("${authentication.oauth.clientid}")
+        private String getPropClientid;
 
-        private RelaxedPropertyResolver propertyResolver;
+        @Value("${authentication.oauth.secret}")
+        private String getPropSecret;
+
+        @Value("${authentication.oauth.client}")
+        private String getPropClient;
+
+        @Value("${authentication.oauth.tokenValidityInSeconds}")
+        private Integer getPropTokenValiditySeconds;
 
         @Autowired
         private MyUserDetailsService myUserDetailsService;
@@ -108,24 +110,19 @@ public class SecurityOauth2Config {
         public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
             clients
                     .inMemory()
-                    .withClient(propertyResolver.getProperty(PROP_CLIENTID))
+                    .withClient(getPropClientid)
                     .scopes("read", "write")
                     .authorities(Authorities.ROLE_ADMIN.name(), Authorities.ROLE_USER.name())
                     .authorizedGrantTypes("password", "refresh_token")
-                    .secret(propertyResolver.getProperty(PROP_SECRET))
-                    .accessTokenValiditySeconds(propertyResolver.getProperty(PROP_TOKEN_VALIDITY_SECONDS, Integer.class, 1800))
+                    .secret(getPropSecret)
+                    .accessTokenValiditySeconds(getPropTokenValiditySeconds)
                     .and()
-                    .withClient(propertyResolver.getProperty(PROP_CLIENT))
+                    .withClient(getPropClient)
                     .scopes("read", "write")
                     .authorities(Authorities.ROLE_USER.name())
                     .authorizedGrantTypes("client_credentials", "refresh_token")
-                    .secret(propertyResolver.getProperty(PROP_SECRET))
-                    .accessTokenValiditySeconds(propertyResolver.getProperty(PROP_TOKEN_VALIDITY_SECONDS, Integer.class, 1800));
-        }
-
-        @Override
-        public void setEnvironment(Environment environment) {
-            this.propertyResolver = new RelaxedPropertyResolver(environment, ENV_OAUTH);
+                    .secret(getPropSecret)
+                    .accessTokenValiditySeconds(getPropTokenValiditySeconds);
         }
 
     }
